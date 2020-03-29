@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#insert").click(function() {
+            var $nim = $("#nim").val();
+            var $nama = $("#nama").val();
+            var $jurusan = $("#jurusan").val();
+            var dataString = "&nim=" + $nim + "&nama=" + $nama + "&jurusan=" + $jurusan + "&insert=";
+            if ($.trim(nim).length > 0 & $.trim(nama).length > 0 & $.trim(jurusan).length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "https://cisted-centimeters.000webhostapp.com/insert.php",
+                    data: dataString,
+                    crossDomain: true,
+                    cache: false,
+                    success: function(data) {
+                        if (data => 'success') {
+                            alert("inserted");
+                            location.reload(true);
+                            $("#insert").val('Insert');
+                        } else if (data => 'error') {
+                            alert("error");
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+    });
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Data Mahasiswa</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="btn-group btn-group-justified">
+    <a href="form.html" class="btn btn-primary">INPUT DATA</a>
+    <a href="readjson.html" class="btn btn-primary">LIST DATA</a>
+  </div>
+</div>
+  <div class="container-fluid">
+    <input type="hidden" id="id" value="" />
+      <div class="form-group">
+        <label for="nim">Nim</label>
+        <input type="text" class="form-control" id="nim" name="nim" value="">
+      </div>
+      <div class="form-group">
+        <label for="nama">Nama</label>
+        <input type="text" class="form-control" id="nama" name="nama" value="">
+      </div>
+      <div class="form-group">
+        <label for="jurusan">Jurusan</label>
+        <input type="text" class="form-control" id="jurusan" name="jurusan" value="">
+      </div>
+      <input type="button" class="btn btn-primary" id="insert" value="insert" />
+  </div>
+</body>
+
+</html>

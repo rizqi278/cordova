@@ -1,0 +1,108 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/geturi.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var id = decodeURI(getUrlVars()["id"]);
+        var nim = decodeURI(getUrlVars()["nim"]);
+        var nama = decodeURI(getUrlVars()["nama"]);
+        var jurusan = decodeURI(getUrlVars()["jurusan"]);
+        $("#id").val(id);
+        $("#nim").val(nim);
+        $("#nama").val(nama);
+        $("#jurusan").val(jurusan);
+        $("#update").click(function() {
+            var x = location.href = "readjson.html";
+            var id = $("#id").val();
+            var nim = $("#nim").val();
+            var nama = $("#nama").val();
+            var jurusan = $("#jurusan").val();
+            var dataString = "id=" + id + "&nim=" + nim + "&nama=" + nama + "&jurusan=" + jurusan + "&update=";
+            $.ajax({
+                type: "POST",
+                url: "https://cisted-centimeters.000webhostapp.com/update.php",
+                data: dataString,
+                crossDomain: true,
+                cache: false,
+                beforeSend: function() {
+                    $("#update").val('Connecting...');
+                },
+                success: function(data) {
+                    if (data == "success") {
+                        alert("Updated");
+                        location.reload(x);
+                        $("#update").val("Update");
+                    } else if (data == "error") {
+                        alert("error");
+                    }
+                }
+            });
+
+        });
+        $("#delete").click(function() {
+            var x = location.href = "readjson.html";
+            var id = $("#id").val();
+            var dataString = "id=" + id + "&delete=";
+            $.ajax({
+                type: "GET",
+                url: "https://cisted-centimeters.000webhostapp.com/delete.php",
+                data: dataString,
+                crossDomain: true,
+                cache: false,
+                beforeSend: function() {
+                    $("#delete").val('Connecting...');
+                },
+                success: function(data) {
+                    if (data == "success") {
+                        alert("Deleted");
+                        location.reload(x);
+                        $("#delete").val("Delete");
+                    } else if (data == "error") {
+                        alert("error");
+                    }
+                }
+            });
+
+        });
+    });
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Data Mahasiswa</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="btn-group btn-group-justified">
+    <a href="index.html" class="btn btn-primary">INPUT DATA</a>
+    <a href="readjson.html" class="btn btn-primary">LIST DATA</a>
+  </div>
+</div>
+  <div class="container-fluid">
+    <input type="hidden" id="id" value="" />
+      <div class="form-group">
+        <label for="nim">Nim</label>
+        <input type="text" class="form-control" id="nim" name="nim" value="">
+      </div>
+      <div class="form-group">
+        <label for="nama">Nama</label>
+        <input type="text" class="form-control" id="nama" name="nama" value="">
+      </div>
+      <div class="form-group">
+        <label for="jurusan">Jurusan</label>
+        <input type="text" class="form-control" id="jurusan" name="jurusan" value="">
+      </div>
+      <div class="btn-group btn-group-justified">
+      <a class="btn btn-primary" id="update" value="Update" >UPDATE</a>
+      <a class="btn btn-primary" id="delete" value="Delete" >DELETE</a>
+      </div>
+  </div>
+</body>
+</html>
